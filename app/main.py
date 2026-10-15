@@ -134,9 +134,7 @@ def create(theme: str=Form(...), recipient: str=Form(...), sender: str=Form(...)
 def created(key: str, _=Depends(auth)):
     r=get_gift(key)
     url=BASE+"/p/"+key
-    return page("Presente criado",'<main class="center panel"><h1>Presente para '+esc(r["recipient"])+
-                ' criado!</h1><p><a href="'+esc(url)+'">'+esc(url)+'</a></p><img class="largeqr" alt="QR Code" src="/qr/'+key+
-                '.png"><p><a class="btn" href="/tag/'+key+'">Imprimir cartão</a> <a href="/admin">Novo presente</a></p></main>')
+    return page("Presente criado",'<main class="center panel"><h1>Presente para '+esc(r["recipient"])+ ' criado!</h1><p><a href="'+esc(url)+'">'+esc(url)+'</a></p><img class="largeqr" alt="QR Code" src="/qr/'+key+ '.png"><p><a class="btn" href="/tag/'+key+'">Imprimir cartão</a> <a href="/admin">Novo presente</a></p></main>')
 
 @app.get("/qr/{key}.png")
 def qr(key: str):
@@ -153,13 +151,7 @@ def qr(key: str):
 @app.get("/tag/{key}")
 def tag(key: str):
     r=get_gift(key)
-    body='<div class="toolbar"><button id="printButton">Imprimir 85 × 50 mm</button></div><div class="tag theme-'+esc(r["theme"])+
-         '"><div class="tagline"><div class="punch"></div><div class="tagtext"><span class="eyebrow">'+esc(THEMES[r["theme"]].upper())+
-         '</span><h2>Para: '+esc(r["recipient"])+
-         '</h2><p class="phrase">'+esc(r["teaser"])+
-         '</p><p>De: '+esc(r["sender"])+
-         '</p><small>ESCANEIE E DESCUBRA A SURPRESA →</small></div><div class="tagqr"><img src="/qr/'+key+
-         '.png" alt="Código QR"><small>UMA SURPRESA PARA VOCÊ</small></div></div></div><script src="/static/experience.js" defer></script>'
+    body='<div class="toolbar"><button id="printButton">Imprimir 85 × 50 mm</button></div><div class="tag theme-'+esc(r["theme"])+ '"><div class="tagline"><div class="punch"></div><div class="tagtext"><span class="eyebrow">'+esc(THEMES[r["theme"]].upper())+ '</span><h2>Para: '+esc(r["recipient"])+ '</h2><p class="phrase">'+esc(r["teaser"])+ '</p><p>De: '+esc(r["sender"])+ '</p><small>ESCANEIE E DESCUBRA A SURPRESA →</small></div><div class="tagqr"><img src="/qr/'+key+ '.png" alt="Código QR"><small>UMA SURPRESA PARA VOCÊ</small></div></div></div><script src="/static/experience.js" defer></script>'
     return page("Tag de "+r["recipient"],body,r["theme"])
 
 @app.get("/p/{key}")
@@ -173,11 +165,5 @@ def present(key: str):
                 extras.append('<div class="mini"><b>'+esc(author.strip())+'</b><p>'+esc(msg.strip())+'</p></div>')
     photo='<img class="memory" loading="lazy" alt="Fotografia especial" src="'+esc(r["photo_url"])+'">' if r["photo_url"] else ""
     audio='<p>Uma mensagem de voz para você</p><audio controls preload="none" src="'+esc(r["voice_url"])+'"></audio>' if r["voice_url"] else ""
-    body='<main class="experience"><div class="panel"><span class="eyebrow">'+esc(THEMES[r["theme"]].upper())+
-         '</span><div class="symbol">✦ ♥ ✦</div><h1>'+esc(r["recipient"])+', este momento é seu.</h1>'+
-         '<p>Há palavras que merecem ser guardadas.</p><button id="openGift" aria-expanded="false" aria-controls="secret">Abrir meu presente ✨</button>'+
-         '<section id="secret" hidden><div class="letter"><span class="eyebrow">UMA CARTA PARA VOCÊ</span><p class="letterbody">'+esc(r["message"])+
-         '</p><p>Com carinho, <em>'+esc(r["sender"])+'</em></p></div>'+photo+audio+
-         ('<h2>Mensagens especiais</h2>'+"".join(extras) if extras else "")+
-         '<p class="closing">Feito com carinho para guardar na memória. ♥</p></section></div></main><script src="/static/experience.js" defer></script>'
+    body='<main class="experience"><div class="panel"><span class="eyebrow">'+esc(THEMES[r["theme"]].upper())+ '</span><div class="symbol">✦ ♥ ✦</div><h1>'+esc(r["recipient"])+', este momento é seu.</h1>'+ '<p>Há palavras que merecem ser guardadas.</p><button id="openGift" aria-expanded="false" aria-controls="secret">Abrir meu presente ✨</button>'+ '<section id="secret" hidden><div class="letter"><span class="eyebrow">UMA CARTA PARA VOCÊ</span><p class="letterbody">'+esc(r["message"])+ '</p><p>Com carinho, <em>'+esc(r["sender"])+'</em></p></div>'+photo+audio+ ('<h2>Mensagens especiais</h2>'+"".join(extras) if extras else "")+ '<p class="closing">Feito com carinho para guardar na memória. ♥</p></section></div></main><script src="/static/experience.js" defer></script>'
     return page("Uma surpresa para "+r["recipient"],body,r["theme"])
