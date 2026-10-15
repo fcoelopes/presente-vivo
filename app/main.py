@@ -173,14 +173,63 @@ def tag(key: str):
 
 @app.get("/p/{key}")
 def present(key: str):
-    r=get_gift(key)
-    extras=[]
+    r = get_gift(key)
+    extras = []
     for line in r["extra_messages"].splitlines():
         if "|" in line:
-            author,msg=line.split("|",1)
+            author, msg = line.split("|", 1)
             if author.strip() and msg.strip():
-                extras.append('<div class="mini"><b>'+esc(author.strip())+'</b><p>'+esc(msg.strip())+'</p></div>')
-    photo='<img class="memory" loading="lazy" alt="Fotografia especial" src="'+esc(r["photo_url"])+'">' if r["photo_url"] else ""
-    audio='<p>Uma mensagem de voz para você</p><audio controls preload="none" src="'+esc(r["voice_url"])+'"></audio>' if r["voice_url"] else ""
-    body='<main class="experience"><div class="panel"><span class="eyebrow">'+esc(THEMES[r["theme"]].upper())+ '</span><div class="symbol">✦ ♥ ✦</div><h1>'+esc(r["recipient"])+', este momento é seu.</h1>'+ '<p>Há palavras que merecem ser guardadas.</p><button id="openGift" aria-expanded="false" aria-controls="secret">Abrir meu presente ✨</button>'+ '<section id="secret" hidden><div class="letter"><span class="eyebrow">UMA CARTA PARA VOCÊ</span><p class="letterbody">'+esc(r["message"])+ '</p><p>Com carinho, <em>'+esc(r["sender"])+'</em></p></div>'+photo+audio+ ('<h2>Mensagens especiais</h2>'+"".join(extras) if extras else "")+ '<p class="closing">Feito com carinho para guardar na memória. ♥</p></section></div></main><script src="/static/experience.js" defer></script>'
-    return page("Uma surpresa para "+r["recipient"],body,r["theme"])
+                extras.append(
+                    '<article class="pv-note"><div class="pv-note-icon" aria-hidden="true">♥</div>'
+                    '<div><h3>' + esc(author.strip()) + '</h3><p>' + esc(msg.strip()) + '</p></div></article>'
+                )
+
+    photo = (
+        '<figure class="pv-photo"><img loading="lazy" alt="Fotografia especial do presente" src="'
+        + esc(r["photo_url"]) + '"></figure>'
+        if r["photo_url"] else ""
+    )
+    audio = (
+        '<div class="pv-audio"><span class="eyebrow">UMA VOZ ESPECIAL</span>'
+        '<p>Há também uma mensagem para ouvir.</p>'
+        '<audio controls preload="none" src="' + esc(r["voice_url"]) + '"></audio></div>'
+        if r["voice_url"] else ""
+    )
+    notes = (
+        '<section class="pv-notes"><h2>Mensagens de quem te ama</h2>'
+        + "".join(extras) + '</section>'
+        if extras else ""
+    )
+    body = (
+        '<main class="pv-experience">'
+        '<div class="pv-stars" aria-hidden="true">✦ &nbsp; ✧ &nbsp; ✦</div>'
+        '<article class="pv-shell">'
+        '<div class="pv-hero" id="pv-hero">'
+        '<span class="pv-kicker">' + esc(THEMES[r["theme"]].upper()) + '</span>'
+        '<div class="pv-emblem" aria-hidden="true"><span>♥</span></div>'
+        '<p class="pv-preface">UM PRESENTE ESPECIAL PARA</p>'
+        '<h1>' + esc(r["recipient"]) + '</h1>'
+        '<div class="pv-gold-line" aria-hidden="true"></div>'
+        '<p class="pv-intro">Alguns presentes são feitos para sentir.<br>'
+        'Outros, para guardar no coração.</p>'
+        '<button id="openGift" class="pv-open" aria-controls="secret" aria-expanded="false">'
+        'Abrir minha surpresa <span aria-hidden="true">✦</span></button>'
+        '<p class="pv-signature">Preparado com carinho por ' + esc(r["sender"]) + '</p>'
+        '</div>'
+        '<section id="secret" class="pv-reveal" hidden tabindex="-1" aria-label="Sua surpresa">'
+        '<span class="pv-kicker">UMA CARTA SÓ PARA VOCÊ</span>'
+        '<div class="pv-letter-mark" aria-hidden="true">❦</div>'
+        '<div class="pv-letter"><p class="pv-message">' + esc(r["message"]) + '</p>'
+        '<p class="pv-from">Com carinho,<br><em>' + esc(r["sender"]) + '</em></p></div>'
+        + photo + audio + notes +
+        '<p class="pv-farewell">Que este carinho acompanhe você muito além de hoje. ♥</p>'
+        '<button id="pv-replay" class="pv-secondary" type="button">Rever a surpresa</button>'
+        '</section>'
+        '</article>'
+        '<p class="pv-footer">PRESENTE VIVO · UMA LEMBRANÇA PARA GUARDAR</p>'
+        '</main><script src="/static/experience.js" defer></script>'
+    )
+    return page(
+        "Uma surpresa para " + r["recipient"], body, r["theme"],
+        extra_head='<link rel="stylesheet" href="/static/present-premium.css">',
+    )
