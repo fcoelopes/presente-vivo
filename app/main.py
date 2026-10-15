@@ -48,12 +48,12 @@ def auth(credentials: HTTPBasicCredentials = Depends(security)):
             and secrets.compare_digest(credentials.password.encode(), ADMIN_PASSWORD.encode())):
         raise HTTPException(401, "Acesso negado", headers={"WWW-Authenticate": 'Basic realm="Presente Vivo"'})
 
-def page(title, body, theme="familia"):
+def page(title, body, theme="familia", extra_head=""):
     return HTMLResponse(
         '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         '<meta name="robots" content="noindex,nofollow"><title>' + esc(title) + '</title>'
-        '<link rel="stylesheet" href="/static/style.css"></head><body class="theme-' + esc(theme) + '">'
+        '<link rel="stylesheet" href="/static/style.css">' + extra_head + '</head><body class="theme-' + esc(theme) + '">'
         + body + '</body></html>',
         headers={"Cache-Control": "no-store", "Referrer-Policy": "no-referrer",
                  "X-Content-Type-Options": "nosniff",
@@ -169,11 +169,7 @@ def tag(key: str):
         '</main><script type="application/json" id="tag-data">' + serialized + '</script>'
         '<script src="/static/tag-premium.js" defer></script>'
     )
-    document = page("Cartão premium para " + r["recipient"], body, r["theme"])
-    document.body = document.body.replace(
-        b'</head>', b'<link rel="stylesheet" href="/static/tag-premium.css"></head>'
-    )
-    return document
+    return page("Cartão premium para " + r["recipient"], body, r["theme"], extra_head='<link rel="stylesheet" href="/static/tag-premium.css">')
 
 @app.get("/p/{key}")
 def present(key: str):
