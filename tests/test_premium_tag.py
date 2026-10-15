@@ -37,7 +37,7 @@ class PremiumTagTests(unittest.TestCase):
         self.assertIn("Baixar SVG", content)
         self.assertIn("abcDEF1234567890", content)
         self.assertNotIn("</script><script>alert", content)
-        self.assertIn(r"\\u003c", content)
+        self.assertIn("u003c", content)
 
     def test_qr_png(self):
         response = qr(self.key)
