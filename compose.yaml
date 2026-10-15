@@ -11,6 +11,17 @@ services:
       - ./data:/data
     ports:
       - "127.0.0.1:8098:8000"
+    networks:
+      - default
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.presente-vivo.rule=Host(`presente.arc.tec.br`)"
+      - "traefik.http.routers.presente-vivo.entrypoints=websecure"
+      - "traefik.http.routers.presente-vivo.tls=true"
+      - "traefik.http.routers.presente-vivo.tls.certresolver=letsencrypt"
+      - "traefik.http.services.presente-vivo.loadbalancer.server.port=8000"
     security_opt:
       - no-new-privileges:true
     healthcheck:
@@ -18,3 +29,7 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+
+networks:
+  proxy:
+    external: true
