@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check
+        run: python -m compileall -q app
+      - name: Docker Compose validation
+        env:
+          PUBLIC_BASE_URL: https://example.org
+          ADMIN_USER: ci
+          ADMIN_PASSWORD: test-only
+        run: docker compose config -q
+      - name: Build container
+        run: docker build -t presente-vivo:ci .
