@@ -32,6 +32,8 @@ class PremiumTagTests(unittest.TestCase):
     def test_premium_tag_reuses_existing_link(self):
         response = tag(self.key)
         content = response.body.decode()
+        self.assertEqual(int(response.headers["content-length"]), len(response.body))
+        self.assertIn("tag-premium.css", content)
         self.assertIn("tag-premium.css", content)
         self.assertIn("tag-premium.js", content)
         self.assertIn("Baixar SVG", content)
