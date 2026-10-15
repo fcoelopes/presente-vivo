@@ -12,6 +12,10 @@ jobs:
           python-version: '3.12'
       - name: Syntax check
         run: python -m compileall -q app
+      - name: Install application dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Premium tag tests
+        run: python -m unittest discover -s tests -v
       - name: Docker Compose validation
         env:
           PUBLIC_BASE_URL: https://example.org
