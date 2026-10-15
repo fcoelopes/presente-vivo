@@ -1,0 +1,20 @@
+services:
+  presente-vivo:
+    build: .
+    restart: unless-stopped
+    environment:
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:?Configure PUBLIC_BASE_URL}
+      ADMIN_USER: ${ADMIN_USER:?Configure ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Configure ADMIN_PASSWORD}
+      DB_PATH: /data/presentes.sqlite3
+    volumes:
+      - ./data:/data
+    ports:
+      - "127.0.0.1:8098:8000"
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
