@@ -150,9 +150,30 @@ def qr(key: str):
 
 @app.get("/tag/{key}")
 def tag(key: str):
-    r=get_gift(key)
-    body='<div class="toolbar"><button id="printButton">Imprimir 85 × 50 mm</button></div><div class="tag theme-'+esc(r["theme"])+ '"><div class="tagline"><div class="punch"></div><div class="tagtext"><span class="eyebrow">'+esc(THEMES[r["theme"]].upper())+ '</span><h2>Para: '+esc(r["recipient"])+ '</h2><p class="phrase">'+esc(r["teaser"])+ '</p><p>De: '+esc(r["sender"])+ '</p><small>ESCANEIE E DESCUBRA A SURPRESA →</small></div><div class="tagqr"><img src="/qr/'+key+ '.png" alt="Código QR"><small>UMA SURPRESA PARA VOCÊ</small></div></div></div><script src="/static/experience.js" defer></script>'
-    return page("Tag de "+r["recipient"],body,r["theme"])
+    r = get_gift(key)
+    import json
+    payload = {
+        "id": r["id"], "theme": r["theme"],
+        "recipient": r["recipient"], "sender": r["sender"],
+        "teaser": r["teaser"]
+    }
+    # Escape the characters that could end an inline JSON script element.
+    serialized = json.dumps(payload, ensure_ascii=False).replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
+    body = (
+        '<main class="premium-page">'
+        '<div class="premium-toolbar"><button id="premium-print">Imprimir 85 × 50 mm</button>'
+        '<button id="premium-svg-download">Baixar SVG</button>'
+        '<a href="/admin">Voltar ao Ateliê</a></div>'
+        '<div class="premium-frame" id="premium-mount"></div>'
+        '<p class="premium-note">Tag premium • QR funcional • faça uma prova de impressão antes da produção</p>'
+        '</main><script type="application/json" id="tag-data">' + serialized + '</script>'
+        '<script src="/static/tag-premium.js" defer></script>'
+    )
+    document = page("Cartão premium para " + r["recipient"], body, r["theme"])
+    document.body = document.body.replace(
+        b'</head>', b'<link rel="stylesheet" href="/static/tag-premium.css"></head>'
+    )
+    return document
 
 @app.get("/p/{key}")
 def present(key: str):
