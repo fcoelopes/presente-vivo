@@ -1,0 +1,27 @@
+/* Presente Vivo — experiência digital premium, isolada do Ateliê de Tags */
+.pv-experience{min-height:100vh;min-height:100dvh;padding:clamp(24px,6vw,70px) 16px 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--wine);background:radial-gradient(ellipse at 50% 10%,#fff8ed 0%,#f0e3df 45%,#d7bfc2 100%);position:relative;overflow:hidden}
+.theme-familia .pv-experience{background:radial-gradient(ellipse at 50% 10%,#fffff5 0%,#ebeee3 48%,#b2c1ae 100%)}.theme-gratidao .pv-experience{background:radial-gradient(ellipse at 50% 10%,#fffaf3 0%,#f6e4e0 49%,#dcb9b3 100%)}
+.pv-experience .pv-stars{color:#bc9066;letter-spacing:18px;font-size:20px;margin-bottom:18px;opacity:.9}
+.pv-shell{width:min(100%,610px);border:1px solid #c9a67d;outline:7px solid #fff8f0a8;border-radius:160px 160px 18px 18px;background:linear-gradient(145deg,#fffaf2 0%,#fff8f1 68%,#f8e9e0 100%);box-shadow:0 22px 65px #4b24301c;position:relative;overflow:hidden}
+.theme-familia .pv-shell{background:linear-gradient(145deg,#fffff6,#f7f9ed)}.theme-gratidao .pv-shell{background:linear-gradient(145deg,#fffdf9,#fff1ef)}
+.pv-shell:before,.pv-shell:after{content:'✧';position:absolute;top:34%;font:30px Georgia,serif;color:#c9a677;opacity:.8}.pv-shell:before{left:19px}.pv-shell:after{right:19px}
+.pv-hero{text-align:center;min-height:570px;padding:72px 42px 60px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pv-kicker{font:700 10px/1.5 'DM Sans',Arial,sans-serif;letter-spacing:3px;text-transform:uppercase;color:var(--wine)}
+.pv-emblem{height:78px;width:78px;border:1px solid #bd936e;border-radius:50%;display:grid;place-items:center;margin:27px 0;color:var(--wine);background:#fffdf8;box-shadow:0 0 0 8px #c4a27817}
+.pv-emblem span{font:39px Georgia,serif}.pv-preface{font-size:10px;letter-spacing:2.3px;font-weight:700;margin:10px 0 3px;color:#8b6972}
+.pv-hero h1{font:italic 500 clamp(42px,8vw,67px)/1.14 'Playfair Display',Georgia,serif;margin:8px 0 17px;color:var(--wine);overflow-wrap:anywhere}
+.pv-gold-line{width:72px;height:1px;background:#b58c62;margin:3px 0 17px}
+.pv-intro{font:italic 19px/1.6 'Playfair Display',Georgia,serif;margin:0 auto 29px;max-width:350px;color:#6a4a55}
+.pv-open{background:var(--wine);border:1px solid var(--wine);border-radius:40px;color:#fffaf3;min-height:52px;padding:15px 32px;font:700 12px 'DM Sans',Arial,sans-serif;letter-spacing:.5px;box-shadow:0 9px 25px #5c29452c}
+.pv-open:hover{transform:translateY(-2px);box-shadow:0 12px 27px #5c294540}.pv-open:focus-visible,.pv-secondary:focus-visible{outline:3px solid #b68a5d;outline-offset:4px}
+.pv-signature{font:italic 13px 'Playfair Display',Georgia,serif;color:#876f73;margin:28px 0 0}
+.pv-reveal{text-align:center;padding:65px 44px 58px;animation:pv-enter 650ms ease both}.pv-reveal[hidden]{display:none!important}
+.pv-hero.is-revealed{display:none}.pv-letter-mark{font:36px Georgia,serif;color:#ba936d;margin:15px 0}
+.pv-letter{padding:30px 24px;margin:20px auto;border-block:1px solid #c9a67d;background:#fffdfa75}
+.pv-message{font:italic clamp(22px,4vw,31px)/1.65 'Playfair Display',Georgia,serif;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 25px;color:var(--wine)}.pv-from{font:15px/1.9 'DM Sans',Arial,sans-serif}.pv-from em{font:italic 27px 'Playfair Display',Georgia,serif}
+.pv-photo{margin:28px 0}.pv-photo img{width:100%;max-height:460px;object-fit:contain;border-radius:6px;border:7px solid #fff;box-shadow:0 5px 18px #0002}
+.pv-audio{margin:26px auto;max-width:360px}.pv-audio audio{width:100%;margin-top:8px}.pv-notes h2{font-size:25px;margin:35px 0 20px}.pv-note{text-align:left;display:flex;gap:14px;margin:12px 0;background:#ffffff94;border:1px solid #ddc5b0;border-radius:10px;padding:16px}.pv-note-icon{color:#a5707b;font:24px Georgia,serif}.pv-note h3{font:600 17px 'Playfair Display',Georgia,serif;margin:0 0 5px}.pv-note p{margin:0;white-space:pre-wrap;font-size:14px}
+.pv-farewell{font:italic 16px 'Playfair Display',Georgia,serif;margin:30px 0}.pv-secondary{background:transparent;color:var(--wine);border:1px solid var(--wine);border-radius:40px;padding:12px 25px;font-size:12px}.pv-footer{font-size:9px;color:#735e63;letter-spacing:2px;text-align:center;margin-top:24px}
+@keyframes pv-enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){.pv-experience{padding:28px 12px}.pv-shell{border-radius:110px 110px 14px 14px}.pv-hero{min-height:min(660px,82dvh);padding:55px 25px 48px}.pv-intro{font-size:17px}.pv-reveal{padding:56px 23px 40px}.pv-letter{padding:22px 8px}.pv-shell:before,.pv-shell:after{display:none}}
+@media(prefers-reduced-motion:reduce){.pv-reveal{animation:none}.pv-open:hover{transform:none}}
